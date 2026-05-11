@@ -45,7 +45,7 @@ public class OrderService {
 				System.out.println("va product : " + product.getName() + " , " + product.getPrice() + " , " + product.getQuantity() + " , " 
 						+ product.getProductId());
 				    if (product == null) {
-				    	throw new ExternalServiceException("product is not present in the inventory");
+				    	throw new ExternalServiceException("product is not present in the inventory. Search for the new project");
 				    }
 				    
 				    if (product.getQuantity() < item.getQuantity()) {
