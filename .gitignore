@@ -1,0 +1,20 @@
+# Keep ONLY our two microservices
+CompanyAppProject/
+Lifestyle/
+Practise/
+Product/
+ReadyBasket/
+Sample/
+Shopping/
+
+# Ignore ALL IDE / workspace junk everywhere
+**/.metadata/
+**/.classpath
+**/.project
+**/.settings/
+**/.idea/
+**/.vscode/
+
+# Ignore build output
+**/target/
+**/*.log
