@@ -1,0 +1,38 @@
+pipeline {
+    agent any
+
+    environment {
+        WORKDIR = 'KeellsSmartGrocery/Code/KeellsSmartGrocery'
+    }
+
+    stages {
+        stage ('checkout scm'){
+            steps {
+                checkout([
+                    $class: 'GitSCM',
+                    branches: [[name: '*/main']],
+                    extensions: [[$class: 'SparseCheckoutPaths',
+                        sparseCheckoutPaths: [[path: 'KeellsSmartGrocery/Code/KeellsSmartGrocery']]]],
+                        userRemoteConfigs: [[url: 'https://github.com/Navi-sai/KeellsNew.git']]
+                ])
+            }
+        }
+        stage('Build(clean + package)') {
+            steps {
+                dir("${WORKDIR}") {
+                    bat 'mvn clean package'
+                }
+            }
+        }
+    }
+
+    post{
+        success {
+            echo 'Build completed successfully'
+        }
+
+        failure {
+            echo 'Build failed Check logs'
+        }
+    }
+}

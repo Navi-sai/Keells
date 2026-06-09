@@ -1,0 +1,68 @@
+package com.KeellsOrder.KeellsOrder.service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+import com.KeellsOrder.KeellsOrder.dto.ItemsRequestDTO;
+import com.KeellsOrder.KeellsOrder.dto.OrderRequestDTO;
+import com.KeellsOrder.KeellsOrder.dto.ProductResponseDTO;
+import com.KeellsOrder.KeellsOrder.entity.Orders;
+import com.KeellsOrder.KeellsOrder.exception.NotAvailableException;
+import com.KeellsOrder.KeellsOrder.httpClient.HttpClient;
+import com.KeellsOrder.KeellsOrder.repository.OrdersRepository;
+
+@Service
+public class OrderService {
+	
+	private final HttpClient httpClient;
+	private final OrdersRepository orderRepository;
+	
+	
+	public OrderService(HttpClient httpClient, OrdersRepository orderRepository) {
+		this.httpClient = httpClient;
+		this.orderRepository = orderRepository;
+	}
+	
+	//orderRequestDTO contains
+	// orderBy
+	// productId
+	// productName
+	// quantity
+	
+	public void createOrder(OrderRequestDTO orderRequestDTO) {
+		
+		double totalOrderPrice = 0;
+		
+		List<ItemsRequestDTO> orderItems = orderRequestDTO.getItemsRequestDto();
+				for (ItemsRequestDTO orderItem : orderItems) {
+					
+					//call inventory service
+					ProductResponseDTO product = httpClient.getProductById(orderItem.getProductId());
+					
+					// check stock availability
+					if (product.getQuantity() < orderItem.getQuantity()) {
+						throw new NotAvailableException("Product Out Of Stock : " + orderItem.getProductName() + " | Available Quantity in the inventory is : " + product.getQuantity());
+					}
+					
+					//calculate running total
+					
+					double itemsTotal = product.getPrice() * orderItem.getQuantity();
+					totalOrderPrice += itemsTotal;
+					
+					Orders order = new Orders();
+					 order.setOrderBy(orderRequestDTO.getOrderBy());
+					 order.setOrderDate(LocalDateTime.now());
+					 order.setBillAmount(totalOrderPrice);
+					 
+					 
+					
+					
+					 
+				}
+		
+		
+	}
+
+}

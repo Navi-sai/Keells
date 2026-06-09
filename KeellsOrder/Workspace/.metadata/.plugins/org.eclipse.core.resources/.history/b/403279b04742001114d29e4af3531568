@@ -1,0 +1,36 @@
+package com.KeellsOrder.KeellsOrder.service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+import org.springframework.stereotype.Service;
+
+import com.KeellsOrder.KeellsOrder.dto.ItemsRequestDTO;
+import com.KeellsOrder.KeellsOrder.dto.OrderRequestDTO;
+import com.KeellsOrder.KeellsOrder.dto.ProductResponseDTO;
+import com.KeellsOrder.KeellsOrder.httpClient.HttpClient;
+
+@Service
+public class OrderService {
+	
+	private final HttpClient httpClient;
+	
+	public OrderService(HttpClient httpClient) {
+		this.httpClient = httpClient;
+	}
+	
+	
+	
+	public void createOrder(OrderRequestDTO orderRequestDto) {
+		
+		List <ItemsRequestDTO> OrderedItems = orderRequestDto.getItemsRequestDto();
+			for (ItemsRequestDTO item : OrderedItems) {
+				ProductResponseDTO product = httpClient.getProductById(item.getProductId());
+				 
+			       
+			}
+		
+	}
+
+}

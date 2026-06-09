@@ -1,0 +1,5 @@
+package com.KeellsSmartGrocery.KeellsSmartGrocery.entity;
+
+public class Product {
+
+}
