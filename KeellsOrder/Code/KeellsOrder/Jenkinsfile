@@ -1,0 +1,63 @@
+pipeline {
+
+    agent any
+
+    environment {
+        WORKDIR = 'KeellsOrder/Code/KeellsOrder'
+    }
+
+    stages {
+
+        stage('Checkout SCM code correct') {
+
+            steps {
+
+                checkout([
+
+                    $class: 'GitSCM',
+
+                    branches: [[
+                        name: '*/main'
+                    ]],
+
+                    extensions: [[
+
+                        $class: 'SparseCheckoutPaths',
+
+                        sparseCheckoutPaths: [[
+                            path: 'KeellsOrder/Code/KeellsOrder'
+                        ]]
+                    ]],
+
+                    userRemoteConfigs: [[
+                        url: 'https://github.com/Navi-sai/KeellsNew.git'
+                    ]]
+                ])
+            }
+        }
+
+        stage('Build (Clean + Package)') {
+
+            steps {
+
+                dir("${WORKDIR}") {
+
+                    echo 'Running Maven build...'
+
+                    bat 'mvn clean package'
+                }
+            }
+        }
+    }
+
+    post {
+
+        success {
+            echo 'Build completed successfully ✔'
+        }
+
+        failure {
+            echo 'Build failed ❌ Check logs'
+        }
+    }
+}
