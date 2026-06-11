@@ -1,4 +1,5 @@
 pipeline {
+
     agent any
 
     environment {
@@ -6,33 +7,57 @@ pipeline {
     }
 
     stages {
-        stage ('checkout scm'){
+
+        stage('Checkout SCM code correct') {
+
             steps {
+
                 checkout([
+
                     $class: 'GitSCM',
-                    branches: [[name: '*/main']],
-                    extensions: [[$class: 'SparseCheckoutPaths',
-                        sparseCheckoutPaths: [[path: 'KeellsSmartGrocery/Code/KeellsSmartGrocery']]]],
-                        userRemoteConfigs: [[url: 'https://github.com/Navi-sai/KeellsNew.git']]
+
+                    branches: [[
+                        name: '*/main'
+                    ]],
+
+                    extensions: [[
+
+                        $class: 'SparseCheckoutPaths',
+
+                        sparseCheckoutPaths: [[
+                            path: 'KeellsSmartGrocery/Code/KeellsSmartGrocery'
+                        ]]
+                    ]],
+
+                    userRemoteConfigs: [[
+                        url: 'https://github.com/Navi-sai/Keells.git'
+                    ]]
                 ])
             }
         }
-        stage('Build(clean + package)') {
+
+        stage('Build (Clean + Package)') {
+
             steps {
+
                 dir("${WORKDIR}") {
+
+                    echo 'Running Maven build...'
+
                     bat 'mvn clean package'
                 }
             }
         }
     }
 
-    post{
+    post {
+
         success {
-            echo 'Build completed successfully'
+            echo 'Build completed successfully ✔'
         }
 
         failure {
-            echo 'Build failed Check logs'
+            echo 'Build failed ❌ Check logs'
         }
     }
 }
