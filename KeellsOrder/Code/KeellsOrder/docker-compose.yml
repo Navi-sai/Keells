@@ -7,7 +7,7 @@ services:
       MYSQL_ROOT_PASSWORD: Blossom@12
       MYSQL_DATABASE: KeellsOrder
     ports:
-      - "3307:3306"
+      - "3308:3306"
 
   keellsorder:
     build: .
