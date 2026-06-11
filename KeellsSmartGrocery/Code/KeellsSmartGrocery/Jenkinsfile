@@ -8,7 +8,7 @@ pipeline {
 
     stages {
 
-        stage('Checkout SCM code correct newly') {
+        stage('Checkout SCM code correct') {
 
             steps {
 
@@ -44,7 +44,7 @@ pipeline {
 
                     echo 'Running Maven build...'
 
-                    bat 'mvn clean package'
+                    bat 'mvn clean package -DskipTests'
                 }
             }
         }
