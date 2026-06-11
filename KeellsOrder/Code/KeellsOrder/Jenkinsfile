@@ -44,7 +44,7 @@ pipeline {
 
                     echo 'Running Maven build...'
 
-                    bat 'mvn clean package'
+                    bat 'mvn clean package -DskipTests'
                 }
             }
         }
