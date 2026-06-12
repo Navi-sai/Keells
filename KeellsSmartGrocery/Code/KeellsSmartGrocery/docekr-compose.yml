@@ -1,0 +1,18 @@
+services:
+
+  mysqlSMG:
+    image: mysql:8.0
+    container_name: mysqlSMG
+    environment:
+      MYSQL_ROOT_PASSWORD: Blossom@12
+      MYSQL_DATABASE: KeellsOrder
+    ports:
+      - "3309:3306"
+
+  keellssmartgrocery:
+    build: .
+    container_name: keellssmartgrocery
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysqlSMG
